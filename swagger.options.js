@@ -16,7 +16,8 @@ const options = {
         },
         servers: [
             {
-                url: `${URL}/api/v1`,
+                // url: `${URL}/api/v1`,
+                url: 'https://api-rest-wsn-iot.azurewebsites.net/api/v1',	    
             }
         ],
     },
