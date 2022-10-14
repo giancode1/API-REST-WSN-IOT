@@ -30,7 +30,7 @@ class DataService {
 
 
     if(!data){
-      throw boom.notFound('No se encontraron datos');
+      throw boom.notFound('data not found');
     }
     return data;
   }
@@ -45,13 +45,13 @@ class DataService {
     return await newData.save();
   }
 
-  async update(sensorId, changes) {
-    const data = await Data.findByIdAndUpdate(sensorId, changes);
-    if(!data){
-      throw boom.notFound('data not found');  
-    }
-    return data;
-  }
+  // async update(sensorId, changes) {
+  //   const data = await Data.findByIdAndUpdate(sensorId, changes);
+  //   if(!data){
+  //     throw boom.notFound('data not found');  
+  //   }
+  //   return data;
+  // }
 
   async deleteManyBySensorId(sensorId, limit) {
     const data = await Data.deleteMany({sensorId: sensorId}).limit(limit);

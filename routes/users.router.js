@@ -88,7 +88,7 @@ const service = new UserService();
  *          items:
  *            type: object
  *            properties:
- *              id: 
+ *              _id: 
  *                type: string
  *                description: The id of the node
  *              name: 
@@ -99,7 +99,7 @@ const service = new UserService();
  *                items:
  *                  type: object 
  *                  properties:
- *                    id:
+ *                    _id:
  *                      type: string
  *                      description: The id of the sensor
  *      example:

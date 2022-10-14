@@ -8,14 +8,13 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const { options } = require('./swagger.options');
 
-require('./finalMqtt');
+// require('./finalMqtt');
 
 const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
 
-const port = process.env.PORT || 80;
-const variablePrueba = process.env.VARIABLE_PRUEBA || 'valor por defecto';
+const port = process.env.PORT || 3000;
 
 //middlewares
 app.use(morgan(':method -- :res[content-length] - :response-time ms'))
@@ -29,10 +28,6 @@ const specs = swaggerJsDoc(options);
 
 app.get('/' , (req, res) =>{
   res.send("Hola mi servidor en Express, autor: Giancarlo Culcay");
-});
-
-app.get('/variable' , (req, res) =>{
-  res.send(`variablePrueba: ${variablePrueba}`);
 });
 
 routerApi(app);

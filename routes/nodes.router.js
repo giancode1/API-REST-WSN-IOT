@@ -181,10 +181,6 @@ router.get('/',
  *              $ref: '#/components/schemas/NodeDetails'
  *      404:
  *        description: Node not found
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/NodeNotFound'
  * 
  */
 
@@ -227,10 +223,6 @@ router.get('/:id',
  *              $ref: '#/components/schemas/Node'
  *      400:
  *        description: The user has not been created
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/NodeNotCreated'
  * 
  */
 
@@ -253,7 +245,7 @@ router.post('/',
  * @swagger
  * /nodes/{id}:
  *  patch:
- *    summary: Update a user
+ *    summary: Update a node
  *    tags: [Nodes]
  *    parameters:
  *      - $ref: '#/components/parameters/NodeId'

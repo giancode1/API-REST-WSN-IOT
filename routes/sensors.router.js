@@ -363,7 +363,7 @@ router.delete('/:sensorId',
  *        default: 10
  *      - offset:
  *        name: offset
- *        description: adasdads
+ *        description: offset
  *        in: query
  *        required: false
  *        type: integer

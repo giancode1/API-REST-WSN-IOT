@@ -13,7 +13,7 @@ function routerApi(app){
   router.use('/users', usersRouter);
   router.use('/nodes', nodesRouter);
   router.use('/sensors', sensorsRouter);
-  router.use('/data', dataRouter);  //solo tendra delete
+  router.use('/data', dataRouter);                  //solo tendra delete
   router.use('/auth', authRouter);
 }
 

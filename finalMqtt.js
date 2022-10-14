@@ -2,7 +2,8 @@ const mqtt = require('mqtt');
 require('./libs/mongoose'); //conexion
 const Data = require('./libs/models/data.model');
 
-const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_HOST}:${process.env.MQTT_PORT}`, {username: process.env.MQTT_USER, password: process.env.MQTT_PASSWORD});
+// const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_HOST}:${process.env.MQTT_PORT}`, {username: process.env.MQTT_USER, password: process.env.MQTT_PASSWORD});
+const mqttClient = mqtt.connect('mqtt://localhost:1883');
 // mqttClient.subscribe('/+/data');
 
 // suscribirse a un array de topicos
