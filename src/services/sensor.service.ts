@@ -14,13 +14,11 @@ class SensorService {
   }
 
   async findById(id: string): Promise<ISensor> {
-    const sensor = await Sensor.findById(id)
-      // .populate('nodeId', 'name description userId')
-      .populate({
-        path: 'nodeId',
-        select: 'name description userId',
-        populate: { path: 'userId', select: 'name' },
-      });
+    const sensor = await Sensor.findById(id).populate({
+      path: 'nodeId',
+      select: 'name description userId',
+      populate: { path: 'userId', select: 'name' },
+    });
     if (!sensor) throw boom.notFound('Sensor not found');
     return sensor;
   }

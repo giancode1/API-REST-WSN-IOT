@@ -26,14 +26,10 @@ const NodeSchema = new Schema<INode>(
       required: true,
       ref: 'User',
     },
-    // sensors:[{
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Sensor'
-    // }],
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true, //crea createdAt y updatedAt
     strict: false,
     id: false, // para que no repita otra vez el id en la consulta
   }

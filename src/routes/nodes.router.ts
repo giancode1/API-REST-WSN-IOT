@@ -155,11 +155,9 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   async (req, res, next) => {
-    // console.log(req.user); // {role: '', sub:'', iat: '', exp: ''}
     try {
       const nodes = await service.find();
       res.json(nodes);
-      // res.json({message: "Hola"});
     } catch (error) {
       next(error);
     }
@@ -239,7 +237,6 @@ router.post(
     try {
       const body = req.body;
       const newNode = await service.create(body);
-      // console.log("newNode._id:", newNode)
       res.status(201).json(newNode);
     } catch (error) {
       next(error);

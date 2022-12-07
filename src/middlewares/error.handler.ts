@@ -20,7 +20,6 @@ export function errorHandler(
   console.log('---errorHandler---');
   res.status(500).json({
     message: err.message,
-    // stack: err.stack  //me estaba dando los datos de la pc en los request ,,peligroso
   });
   next(err);
 }

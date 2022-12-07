@@ -14,15 +14,10 @@ class NodeService {
   }
 
   async findById(id: string): Promise<INode> {
-    // const node = await Node.findById(id).populate({path: 'userId', select: 'name -_id'});
     const node = await Node.findById(id)
       .populate('userId', 'name')
-      // .populate('sensors')
-      // .populate('sensors', 'name')
       .populate({ path: 'sensors', select: 'name description -nodeId' });
     if (!node) throw boom.notFound('Node not found');
-    // delete node.userId.id
-    // console.log("node::",node,"..se acabo")
     return node;
   }
 

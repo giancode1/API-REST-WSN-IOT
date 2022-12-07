@@ -18,4 +18,4 @@ services:
     ports:
       - 27020:27017
     volumes:
-    - ./myData:/data/db
+      - ./myData:/data/db

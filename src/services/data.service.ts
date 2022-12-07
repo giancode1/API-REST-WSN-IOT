@@ -12,17 +12,11 @@ class DataService {
     offset: number,
     date: string
   ) {
-    // console.log(limit, offset);
-
-    // $gte = greater than or equal to
-    // const data = await Data.find({createdAt: '2022-01-11T21:01:07.146Z'});
     let myDate;
 
     const options: Options = {
       sensorId,
     };
-
-    // console.log('date', date);
 
     if (date) {
       try {
@@ -53,13 +47,8 @@ class DataService {
     return await newData.save();
   }
 
-  // el delete debe tener queries de donde hacia donde y no solo uno es especifico, osea como deleteMANY --con fechas //esta vez no le hare con fechas sino con limit
-
   async deleteManyBySensorId(sensorId: string, limit: number) {
-    // const data = await Data.findByIdAndDelete(sensorId);
-
-    // const data = await Data.deleteMany({sensorId: sensorId}); //borra todos los datos de un sensor
-    const data = await Data.deleteMany({ sensorId }).limit(limit); // borra los datos(#limit) mas viejos //por ejem los 2 ultimos mas antiguos borra
+    const data = await Data.deleteMany({ sensorId }).limit(limit);
 
     if (!data) throw boom.notFound('Data not found');
     return data;
@@ -73,4 +62,3 @@ class DataService {
 }
 
 export default DataService;
-// data

@@ -2,8 +2,6 @@
 import mongoose from 'mongoose';
 import { config } from '../config';
 
-// local
-// const URI = 'mongodb://localhost:27017/iot';
 const URI = config.dbURI!;
 
 const mongoConn = mongoose.connect(URI, {

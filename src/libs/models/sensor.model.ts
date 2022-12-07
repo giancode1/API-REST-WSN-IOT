@@ -30,7 +30,7 @@ const SensorSchema = new Schema<ISensor>(
     versionKey: false,
     timestamps: true,
     strict: false,
-    id: false, // para que no repita otra vez el id en la consulta
+    id: false,
   }
 );
 

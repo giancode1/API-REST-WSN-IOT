@@ -27,12 +27,9 @@ const app = express();
 const port = config.port;
 
 // middlewares
-// app.use(morgan('dev'))
-// app.use(morgan('tiny'))
 app.use(helmet());
 app.use(morgan(':method -- :res[content-length] - :response-time ms'));
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true}))
 
 app.use(cors());
 require('./auth'); // para que passport funcione
@@ -56,7 +53,6 @@ routerApi(app);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// middlewares, importante el orden
 app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);

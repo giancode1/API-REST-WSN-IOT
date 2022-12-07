@@ -18,15 +18,15 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    tsconfigRootDir : __dirname,
+    tsconfigRootDir: __dirname,
     project: 'tsconfig.json',
   },
   rules: {
     'no-unused-vars': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    "@typescript-eslint/no-misused-promises": "off",
+    '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    "@typescript-eslint/strict-boolean-expressions": "off"
+    '@typescript-eslint/strict-boolean-expressions': 'off',
   },
 };

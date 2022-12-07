@@ -86,7 +86,6 @@ router.post(
         user,
         token,
       });
-      // res.json(req.user);  //antes
     } catch (error) {
       next(error);
     }

@@ -166,8 +166,6 @@ router.get(
   checkRoles('admin'),
   async (req, res, next) => {
     try {
-      // const {totalSensors, sensors}  = await service.find();
-      // res.json({totalSensors, sensors});
       const sensors = await service.find();
       res.json(sensors);
     } catch (error) {
@@ -431,7 +429,6 @@ router.get(
       const limit = parseInt(req.query.limit) || 10;
       const offset = parseInt(req.query.offset) || 0;
       const date = req.query.date;
-      // console.log(sensorId, limit, offset, date);
       const data = await service2.getDataBySensorId(
         sensorId,
         limit,
@@ -439,7 +436,6 @@ router.get(
         date
       );
       res.json(data);
-      // res.json({message: "hola data"})
     } catch (error) {
       next(error);
     }

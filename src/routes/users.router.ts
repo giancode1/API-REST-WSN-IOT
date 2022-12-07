@@ -170,13 +170,11 @@ const service = new UserService();
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
-  checkRoles('admin'), // autorizado solo admin
-  // checkRoles('admin','user'),
+  checkRoles('admin'),
   async (_req, res, next) => {
     try {
       const users = await service.find();
       res.json(users);
-      // res.json({message: "Hola"});
     } catch (error) {
       next(error);
     }
@@ -249,8 +247,8 @@ router.get(
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
-  checkRoles('admin'), // solo permito hacer post de usuarios al usuario admin
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -293,7 +291,7 @@ router.post(
 
 router.patch(
   '/:id',
-  passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
+  passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
@@ -342,7 +340,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
+  passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {

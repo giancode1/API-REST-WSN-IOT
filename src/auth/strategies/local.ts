@@ -5,11 +5,9 @@ import UserService from '../../services/user.service';
 
 const service = new UserService();
 
-// aqui toda mi logica de negocio
-// para mi el username es el email
+// personalizo estas opciones, para no atarme a username
 export const LocalStrategy = new Strategy(
   {
-    // personalizo estas opciones, para no atarme a username
     usernameField: 'email',
     passwordField: 'password',
   },
@@ -24,7 +22,6 @@ export const LocalStrategy = new Strategy(
         done(boom.unauthorized('invalid email or password'), false);
       }
 
-      // delete user.password
       const { password: pass, ...userWithoutPass } = user._doc;
 
       done(null, userWithoutPass); // null: no hay error
