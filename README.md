@@ -33,6 +33,8 @@ Para ver la información de los nodos restantes visita el [Proyecto](https://rep
 - Comunicación Asíncrona
 - Autenticación, Autorización
 - JWT
+- Comunicación bidireccional con dispositivos iot
+- Datos, configuración
 
 ## Tecnologias, dipositivos usados en el proyecto
 
@@ -65,8 +67,3 @@ npm install
 # or
 yarn
 ```
-
-version tags
-swagger doc imgs
-
-agregar usuario con rol 'admin'
