@@ -43,11 +43,13 @@ Para ver la información de los nodos restantes visita el [Proyecto](https://rep
 - MQTT
 - React Native
 - JMeter
+## Dipositivos usados en el proyecto
 - Arduino
 - ESP32
 - ESP8266
 - PIC
 - Sensores varios
+- LCD
 - Raspberry PI
 
 ## Instalar dependencias

@@ -1,6 +1,6 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
-export interface ISensor extends Document {
+export interface ISensor {
   name: string;
   description?: string;
   enabled?: boolean;

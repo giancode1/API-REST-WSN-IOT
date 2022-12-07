@@ -426,12 +426,12 @@ router.get(
   validatorHandler(getSensorSchema, 'params'),
   async (req: any, res, next) => {
     try {
-      const { sensorId } = req.params; // sensor id
+      const { sensorId } = req.params;
       // transform quey params to int
       const limit = parseInt(req.query.limit) || 10;
       const offset = parseInt(req.query.offset) || 0;
       const date = req.query.date;
-      console.log(sensorId, limit, offset, date);
+      // console.log(sensorId, limit, offset, date);
       const data = await service2.getDataBySensorId(
         sensorId,
         limit,

@@ -1,8 +1,10 @@
 dist/
 node_modules/
 package-lock.json
-examples/
+html/
 fronted/
+microcontrolador-raspberry-otros/
+imgs/
 .cache
 .github/
 tsconfig.json

@@ -1,6 +1,6 @@
-import { config } from './config/config';
+import { config } from './config';
 
-const URL = config.urlBase ?? 'http://localhost:3000';
+const URL = config.urlBase ?? `http://localhost:${config.port}`;
 
 export const options = {
   definition: {

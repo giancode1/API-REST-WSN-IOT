@@ -1,8 +1,6 @@
-import '../libs/mongoose'; // conexion
-import boom from '@hapi/boom';
 import Sensor from '../libs/models/sensor.model';
 import Data from '../libs/models/data.model';
-
+import boom from '@hapi/boom';
 interface Options {
   sensorId: string;
   createdAt?: { $gte: string | Date };
@@ -24,14 +22,13 @@ class DataService {
       sensorId,
     };
 
-    console.log('date', date);
+    // console.log('date', date);
 
     if (date) {
       try {
         myDate = new Date(date);
-        console.log('llego aca parece', date, myDate);
         if (myDate.toString() === 'Invalid Date') {
-          throw new Error('Invalid Date');
+          throw boom.badRequest('Invalid Date');
         }
         options.createdAt = { $gte: myDate };
       } catch (error) {
@@ -44,17 +41,13 @@ class DataService {
       .limit(limit)
       .skip(offset);
 
-    if (!data) {
-      throw boom.notFound('data not found');
-    }
+    if (!data) throw boom.notFound('Data not found');
     return data;
   }
 
   async createDataBySensorId(sensorId: string, data: any) {
     const sensor = await Sensor.findById(sensorId);
-    if (!sensor) {
-      throw boom.notFound('sensor not found'); // lanza el error
-    }
+    if (!sensor) throw boom.notFound('Sensor not found');
     data.sensorId = sensorId;
     const newData = new Data(data);
     return await newData.save();
@@ -66,19 +59,15 @@ class DataService {
     // const data = await Data.findByIdAndDelete(sensorId);
 
     // const data = await Data.deleteMany({sensorId: sensorId}); //borra todos los datos de un sensor
-    const data = await Data.deleteMany({ sensorId: sensorId }).limit(limit); // borra los datos(#limit) mas viejos //por ejem los 2 ultimos mas antiguos borra
+    const data = await Data.deleteMany({ sensorId }).limit(limit); // borra los datos(#limit) mas viejos //por ejem los 2 ultimos mas antiguos borra
 
-    if (!data) {
-      throw boom.notFound('data not found');
-    }
+    if (!data) throw boom.notFound('Data not found');
     return data;
   }
 
   async deleteDataById(id: string) {
     const data = await Data.findByIdAndDelete(id);
-    if (!data) {
-      throw boom.notFound('data not found');
-    }
+    if (!data) throw boom.notFound('Data not found');
     return data;
   }
 }

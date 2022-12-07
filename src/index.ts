@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+
 // Swagger Documentación
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
@@ -15,14 +16,14 @@ import {
   boomErrorHandler,
 } from './middlewares/error.handler';
 
-import { config } from './config/config';
+import { config } from './config';
+import './libs/mongoose';
 
 // comentado ya que se termino los creditos de Azure Student y se inhabilito el contenedor de mqtt:
 // import './finalMqtt'; // descomentar para agregar comunicación MQTT, agregar nuevas variables
 // los datos de usuarios, nodos, sensores, data  continuan funcionando
 
 const app = express();
-
 const port = config.port;
 
 // middlewares
@@ -43,6 +44,10 @@ app.get('/', (_req: Request, res: Response) => {
   <div>
       <h1>API REST PARA LA TRANSMISIÓN DE INFORMACIÓN Y CONTROL DE REDES DE SENSORES IOT</h1>
       <h4>Autor: Giancarlo Culcay</h4>
+      <form action="/docs">
+       <button type="submit">Ver documentación</button>
+      </form>
+
     </div>
     `);
 });
@@ -59,3 +64,6 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`My port: ${port}`);
 });
+
+export default app;
+// Giancarlo Culcay

@@ -1,6 +1,6 @@
 import { Schema, model, Types } from 'mongoose';
 
-export interface INode extends Document {
+export interface INode {
   name: string;
   description?: string;
   enabled?: boolean;

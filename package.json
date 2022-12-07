@@ -12,8 +12,7 @@
     "build": "tsc",
     "lint": "eslint --ignore-path .gitignore . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier --write .",
-    "test": "jest --verbose"
+    "format": "prettier --write ."
   },
   "keywords": [
     "api rest",

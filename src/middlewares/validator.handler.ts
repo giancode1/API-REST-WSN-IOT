@@ -14,7 +14,7 @@ export function validatorHandler(schema: ObjectSchema, property: Property) {
     // req[property] : de forma dinamica
     const { error } = schema.validate(data, { abortEarly: false });
     if (error) {
-      next(boom.badRequest(`${error}`)); // envia a los middlewares de tipo error
+      next(boom.badRequest(`${error.message}`)); // envia a los middlewares de tipo error
     }
     next(); // si no hay error siga
   };

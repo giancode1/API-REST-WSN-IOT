@@ -1,34 +1,31 @@
-import '../libs/mongoose'; // conexion
 import boom from '@hapi/boom';
-import User from '../libs/models/user.model';
+import User, { IUser } from '../libs/models/user.model';
 import brcypt from 'bcrypt';
 
 class UserService {
-  async find() {
-    // Promise<IUser[]> | User[]   podria ser
+  async find(): Promise<IUser[]> {
     const users = await User.find().select('-password');
+    if (!users) throw boom.notFound('No users found');
     return users;
   }
 
-  async create(data: any) {
-    const user = await User.findOne({ email: data.email });
-    if (user) {
-      throw boom.badRequest('User already Exists');
-    }
+  async create(data: IUser): Promise<IUser> {
+    const userExists = await User.findOne({ email: data.email });
+    if (userExists) throw boom.badRequest('User already exists');
 
     const hash = brcypt.hashSync(data.password, 10);
-    const newUser: any = new User({
+
+    const user = {
       ...data,
       password: hash,
-    });
-    await newUser.save();
+    };
+    const newUser: any = await User.create(user);
 
-    const { password, ...userWithoutPass } = newUser._doc;
-
-    return userWithoutPass;
+    const { password, ...userWithoutPassword } = newUser._doc;
+    return userWithoutPassword;
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<IUser> {
     const user = await User.findById(id)
       .select('-password')
 
@@ -38,33 +35,25 @@ class UserService {
         populate: { path: 'sensors', select: 'name -nodeId' },
       });
 
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
+    if (!user) throw boom.notFound('User not found');
     return user;
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<IUser> {
     const user = await User.findOne({ email });
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
+    if (!user) throw boom.notFound('User not found');
     return user;
   }
 
-  async update(id: string, changes: any) {
-    const user = await User.findByIdAndUpdate(id, changes).select('-password');
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
+  async update(id: string, data: Partial<IUser>): Promise<IUser> {
+    const user = await User.findByIdAndUpdate(id, data).select('-password'); // return old user
+    if (!user) throw boom.notFound('User not found');
     return user;
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<IUser> {
     const user = await User.findByIdAndDelete(id);
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
+    if (!user) throw boom.notFound('User not found');
     return user;
   }
 }

@@ -6,7 +6,7 @@ export function logErrors(
   res: Response,
   next: NextFunction
 ) {
-  console.log('logErrors');
+  console.log('---logErrors---');
   console.error(err);
   next(err);
 }
@@ -17,7 +17,7 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log('errorHandler');
+  console.log('---errorHandler---');
   res.status(500).json({
     message: err.message,
     // stack: err.stack  //me estaba dando los datos de la pc en los request ,,peligroso

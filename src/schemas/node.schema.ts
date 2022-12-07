@@ -1,9 +1,10 @@
 import Joi from 'joi';
 import { INode } from '../libs/models/node.model';
+import { createObjectIdValidator } from './customId';
 
-const id = Joi.string().alphanum().length(24);
 const name = Joi.string().min(3);
-const userId = Joi.string().alphanum().length(24);
+const id = Joi.string().custom(createObjectIdValidator);
+const userId = Joi.string().custom(createObjectIdValidator);
 const description = Joi.string();
 
 export const getNodeSchema = Joi.object({
@@ -16,7 +17,7 @@ export const createNodeSchema = Joi.object<INode>({
   description: description.required(),
 }).options({ allowUnknown: true });
 
-export const updateNodeSchema = Joi.object({
+export const updateNodeSchema = Joi.object<Partial<INode>>({
   name,
   description,
 }).options({ allowUnknown: true });

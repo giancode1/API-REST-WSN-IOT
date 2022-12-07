@@ -1,9 +1,10 @@
 import Joi from 'joi';
 import { ISensor } from '../libs/models/sensor.model';
+import { createObjectIdValidator } from './customId';
 
-const sensorId = Joi.string().alphanum().length(24);
 const name = Joi.string().min(3);
-const nodeId = Joi.string().alphanum().length(24);
+const sensorId = Joi.string().custom(createObjectIdValidator);
+const nodeId = Joi.string().custom(createObjectIdValidator);
 
 export const getSensorSchema = Joi.object({
   sensorId: sensorId.required(),
@@ -14,7 +15,7 @@ export const createSensorSchema = Joi.object<ISensor>({
   nodeId: nodeId.required(),
 }).options({ allowUnknown: true });
 
-export const updateSensorSchema = Joi.object({
+export const updateSensorSchema = Joi.object<Partial<ISensor>>({
   name,
   nodeId,
 }).options({ allowUnknown: true });

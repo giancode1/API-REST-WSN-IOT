@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-// const bcrypt = require('bcrypt');
+// import bcrypt from 'bcrypt';
 export interface IUser {
   name: string;
   email: string;
@@ -14,6 +14,8 @@ const UserSchema = new Schema<IUser>(
     name: {
       type: String,
       required: true,
+      minlength: 2,
+      maxlength: 255,
     },
     email: {
       type: String,
@@ -21,6 +23,8 @@ const UserSchema = new Schema<IUser>(
       required: true,
       lowercase: true,
       trim: true,
+      minlength: 5,
+      maxlength: 255,
     },
     password: {
       type: String,
@@ -34,6 +38,7 @@ const UserSchema = new Schema<IUser>(
     role: {
       type: String,
       default: 'user',
+      enum: ['user', 'admin'],
     },
     // nodes: [{
     //   type: Schema.Types.ObjectId,
@@ -55,6 +60,22 @@ const UserSchema = new Schema<IUser>(
 // UserSchema.methods.matchPassword = async function(password) {
 //   return await bcrypt.compare(password, this.password)
 // }
+
+// otro ---
+// UserSchema.pre<IUser>('save', async function (this: any, next) {
+//   if (this.isModified('password')) {
+//     this.password = await bcrypt.hash(this.password, 10);
+//   }
+//   next();
+// });
+
+// Add a method to compare the old and new password
+// UserSchema.methods.comparePassword = async function (
+//   this: any,
+//   candidatePassword: string
+// ) {
+//   return await bcrypt.compare(candidatePassword, this.password);
+// };
 
 UserSchema.virtual('nodes', {
   ref: 'Node',

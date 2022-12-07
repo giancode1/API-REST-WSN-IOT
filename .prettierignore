@@ -7,6 +7,14 @@ dist
 package-lock.json
 examples
 fronted
+html
+microcontrolador-raspberry-otros
+imgs
 tsconfig.json
+.cache
 .github
+
+
+
+
 
