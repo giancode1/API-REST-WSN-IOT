@@ -1,0 +1,21 @@
+# Para propósitos de desarrollo y pruebas locales
+version: '3.8'
+services:
+  emqx:
+    container_name: emqx
+    image: emqx/emqx:4.3.11
+    # image: emqx/emqx:4.2.3
+    restart: always
+    ports:
+      - 18083:18083
+      - 8083:8083
+      - 1883:1883
+
+  mongo:
+    container_name: mongo_iot
+    image: mongo:5.0.3
+    restart: always
+    ports:
+      - 27020:27017
+    volumes:
+      - ./myData:/data/db

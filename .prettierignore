@@ -1,0 +1,20 @@
+# ya ignora por defecto node_modules
+# ejecuta para ver que archivos formatea
+# npx prettier -check .
+
+# ignorar:
+dist
+package-lock.json
+examples
+fronted
+html
+microcontrolador-raspberry-otros
+imgs
+tsconfig.json
+.cache
+.github
+
+
+
+
+
