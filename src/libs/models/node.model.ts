@@ -29,7 +29,7 @@ const NodeSchema = new Schema<INode>(
   },
   {
     versionKey: false,
-    timestamps: true, //crea createdAt y updatedAt
+    timestamps: true, // crea createdAt y updatedAt
     strict: false,
     id: false, // para que no repita otra vez el id en la consulta
   }
