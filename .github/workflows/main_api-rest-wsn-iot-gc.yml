@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tsconfig.json'
   workflow_dispatch:
 
 jobs:
@@ -54,3 +58,7 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_52B9AF9BA4984658ACAFE0DC31483D0B }}
           package: .
+          src-path: ./src
+          tsconfig-path: ./tsconfig.json
+          package-path: ./package.json
+          package-lock-path: ./package-lock.json

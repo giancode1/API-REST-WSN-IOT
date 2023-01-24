@@ -490,7 +490,7 @@ router.post(
   validatorHandler(getSensorSchema, 'params'), // valido si esta bn el id del sensor
   async (req, res, next) => {
     try {
-      const { sensorId } = req.params; // sensor id
+      const { sensorId } = req.params;
       const body = req.body;
       const newData = await service2.createDataBySensorId(sensorId, body);
       res.status(201).json(newData);
@@ -502,7 +502,7 @@ router.post(
 
 /**
  * @swagger
- * /sensorId/{id}:
+ * /{sensorId}/data:
  *  delete:
  *    summary: Delete old data of a sensor, limit of data is optional
  *    tags: [Data]
@@ -544,7 +544,7 @@ router.delete(
   async (req: any, res, next) => {
     try {
       const { sensorId } = req.params;
-      const limit = parseInt(req.query.limit) || 1; // por defecto borra 1 dato
+      const limit = parseInt(req.query.limit) || 1;
       const data = await service2.deleteManyBySensorId(sensorId, limit);
       res.status(201).json(data);
     } catch (error) {

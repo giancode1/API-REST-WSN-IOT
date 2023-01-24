@@ -1,7 +1,7 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
 export interface IData extends Document {
-  sensorId: string | Types.ObjectId;
+  sensorId: Types.ObjectId;
 }
 
 const DataSchema = new Schema<IData>(

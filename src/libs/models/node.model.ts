@@ -4,7 +4,7 @@ export interface INode {
   name: string;
   description?: string;
   enabled?: boolean;
-  userId: string | Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 const NodeSchema = new Schema<INode>(

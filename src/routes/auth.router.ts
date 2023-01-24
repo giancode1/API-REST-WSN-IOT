@@ -80,7 +80,6 @@ router.post(
         role: user.role,
         sub: user._id,
       };
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const token = jwt.sign(payload, config.jwtSecret!, { expiresIn: '7d' });
       res.json({
         user,

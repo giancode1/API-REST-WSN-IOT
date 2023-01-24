@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import { IUser } from '../libs/models/user.model';
-import { createObjectIdValidator } from './customId';
+import { objectIdValidator } from './customId';
 
-const id = Joi.string().custom(createObjectIdValidator);
+const id = Joi.string().custom(objectIdValidator);
 const name = Joi.string().min(3);
 const email = Joi.string().email();
 const password = Joi.string().min(5);

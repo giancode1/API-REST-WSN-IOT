@@ -4,7 +4,7 @@ import boom from '@hapi/boom';
 class NodeService {
   async find(): Promise<INode[]> {
     const nodes = await Node.find();
-    if (!nodes) throw boom.notFound('No nodes found');
+    if (!nodes) throw boom.notFound('Nodes not found');
     return nodes;
   }
 

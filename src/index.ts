@@ -19,9 +19,7 @@ import {
 import { config } from './config';
 import './libs/mongoose';
 
-// comentado ya que se termino los creditos de Azure Student y se inhabilito el contenedor de mqtt:
-// import './finalMqtt'; // descomentar para agregar comunicación MQTT, agregar nuevas variables
-// los datos de usuarios, nodos, sensores, data  continuan funcionando
+import './finalMqtt';
 
 const app = express();
 const port = config.port;
@@ -44,7 +42,6 @@ app.get('/', (_req: Request, res: Response) => {
       <form action="/docs">
        <button type="submit">Ver documentación</button>
       </form>
-
     </div>
     `);
 });

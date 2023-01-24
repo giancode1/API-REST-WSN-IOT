@@ -1,11 +1,32 @@
 import mqtt from 'mqtt';
 import './libs/mongoose'; // conexion
 import Data from './libs/models/data.model';
+import { config } from './config';
+
+let attempts = 0;
+const maxAttempts = 10;
 
 const mqttClient = mqtt.connect(
-  `mqtt://${process.env.MQTT_HOST}:${process.env.MQTT_PORT}`,
-  { username: process.env.MQTT_USER, password: process.env.MQTT_PASSWORD }
+  `mqtt://${config.mqttHost!}:${config.mqttPort!}`,
+  { username: config.mqttUser, password: config.mqttPassword }
 );
+
+mqttClient.on('connect', () => {
+  console.log('MQTT Connected!');
+});
+
+mqttClient.on('error', error => {
+  console.log('Error connecting to MQTT: ' + error.message);
+  if (attempts < maxAttempts) {
+    attempts++;
+    mqttClient.reconnect();
+  } else {
+    console.log(`Max Attempts reached: ${maxAttempts}`);
+    mqttClient.end();
+    console.log('Maximum attempts reached. Closing connection.');
+  }
+});
+
 // mqttClient.subscribe('/+/data');
 
 // suscribirse a un array de topicos
@@ -20,16 +41,16 @@ mqttClient.on('message', (topic: string, message: any) => {
 
   if (operation === 'data') {
     try {
-      const m = JSON.parse(message.toString()); //m es un objeto
+      const m = JSON.parse(message.toString()); // m es un objeto
 
       async function createData(payload: any) {
-        payload.sensorId = sensorId; //ejm: payload.sensorId = '6195460174d18fcbab518e1a'
+        payload.sensorId = sensorId; // ejm: payload.sensorId = '6195460174d18fcbab518e1a'
         const newData = new Data(payload);
         return await newData.save();
       }
-      createData(m).then(console.log);
+      void createData(m).then(console.log);
     } catch (e) {
-      mqttClient.publish(`/data/error`, `{"error": "${topic}"`); //talvez fallo el formato de envio del mensaje
+      mqttClient.publish(`/data/error`, `{"error": "${topic}"`); // talvez fallo el formato de envio del mensaje
       console.log(`error: ${topic}`);
     }
   }
@@ -48,4 +69,4 @@ async function publishChanges(sensorId: string, changes: any) {
   }
 }
 
-module.exports = publishChanges;
+export default publishChanges;

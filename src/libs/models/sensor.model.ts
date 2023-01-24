@@ -4,7 +4,7 @@ export interface ISensor {
   name: string;
   description?: string;
   enabled?: boolean;
-  nodeId: string | Types.ObjectId;
+  nodeId: Types.ObjectId;
 }
 
 const SensorSchema = new Schema<ISensor>(

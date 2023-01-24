@@ -1,5 +1,6 @@
 import boom from '@hapi/boom';
 import Sensor, { ISensor } from '../libs/models/sensor.model';
+import publishChanges from '../finalMqtt';
 
 class SensorService {
   async find(): Promise<ISensor[]> {
@@ -25,6 +26,7 @@ class SensorService {
 
   async update(id: string, data: ISensor): Promise<ISensor> {
     const sensor = await Sensor.findByIdAndUpdate(id, data);
+    sensor && (await publishChanges(id, data));
     if (!sensor) throw boom.notFound('Sensor not found');
     return sensor;
   }

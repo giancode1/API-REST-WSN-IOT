@@ -1,10 +1,12 @@
 import Sensor from '../libs/models/sensor.model';
 import Data from '../libs/models/data.model';
 import boom from '@hapi/boom';
+
 interface Options {
   sensorId: string;
   createdAt?: { $gte: string | Date };
 }
+
 class DataService {
   async getDataBySensorId(
     sensorId: string,
