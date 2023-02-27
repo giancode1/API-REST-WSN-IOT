@@ -13,6 +13,7 @@ imgs
 tsconfig.json
 .cache
 .github
+coverage_e2e/
 
 
 

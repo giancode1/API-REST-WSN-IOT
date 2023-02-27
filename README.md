@@ -60,7 +60,7 @@ TODAS las demás rutas estan disponibles si el usuario cuenta con el token de ac
 
 ## Ejemplos consultas endpoints
 
-### Nodo 1, Datos Página Web
+### Nodo 1 de 3, Datos Página Web
 
 ![Image text](./imgs/nodo1-datos-navegador.png)
 
@@ -109,7 +109,7 @@ Completa las variables con el string de conexiónde tu base de datos de mongoDB.
 
 ## Completar variables de entorno, usuario en DB
 
-Crea en tu db, un usuario con rol "admin"
+Crea en tu base de datos, un usuario con rol "admin"
 ejemplo:
 ```json
 {
@@ -120,7 +120,7 @@ ejemplo:
 }
 ```
 Crea mas usuarios con role "user"  
-Una vez creado el usuario se recomienda crear un nodo, despues los sensores y los datos.
+Una vez creado el usuario se recomienda crear un nodo, después los sensores y los datos.
 Observa los parámetros de ejemplo en [swagger](https://api-rest-wsn-iot-gc.azurewebsites.net/docs/)
 
 ## Modo Desarrollo
@@ -142,7 +142,7 @@ docker-compose up -d
 Básicamente se debe tener acceso a la dirección del broker o servidor MQTT y la contraseña.
 Los datos se serializan y deserializan a JSON tanto en subida y bajada de datos y configuración. Mediante la libreria: `<ArduinoJson.h>` para los dipositivos ESP8266, ESP32. Y con la libreria json para el servidor de subida ___estacion-pi___
 
-Se presenta una parte del ejemplo de los 3 en carpeta "microcontrolador-raspberry-otros"  
+Se presenta una parte del ejemplo de los 3 en la carpeta "microcontrolador-raspberry-otros"  
 
 Para mas información ver el proyecto publicado.
 
@@ -169,3 +169,7 @@ const char* mqtt_pass = "****";
     Serial.println(payload);
     client.publish("/61fb410e979f19a78b9df5b5/data", payload.c_str()); // sensorId/data
 ```
+
+# Licencia
+
+Derechos cedidos a la Universidad Técnica de Ambato.

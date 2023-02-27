@@ -11,9 +11,10 @@ module.exports = {
     'eslint-config-prettier', //
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:jest/recommended',
     // 'eslint:recommended',
   ],
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint/eslint-plugin', 'jest'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',

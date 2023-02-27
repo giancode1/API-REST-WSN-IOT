@@ -8,3 +8,4 @@ imgs/
 .cache
 .github/
 tsconfig.json
+coverage_e2e/

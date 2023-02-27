@@ -1,10 +1,11 @@
 import { Types } from 'mongoose';
 
-export function objectIdValidator(value: any) {
-  return (helpers: any) => {
-    if (!Types.ObjectId.isValid(value)) {
-      return helpers.error('Invalid Id');
-    }
-    return value;
-  };
+export function objectIdValidator(value: any, helpers: any) {
+  const isValidObjectId = Types.ObjectId.isValid(value);
+
+  if (!isValidObjectId) {
+    return helpers.message('Invalid id');
+  }
+
+  return value;
 }

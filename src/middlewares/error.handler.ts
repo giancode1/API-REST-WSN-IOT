@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import logger from '../utils/logger';
+import { config } from '../config';
 
 export function logErrors(
   err: any,
@@ -6,8 +8,9 @@ export function logErrors(
   res: Response,
   next: NextFunction
 ) {
-  console.log('---logErrors---');
-  console.error(err);
+  if (config.env === 'dev') {
+    logger.warn(err.message);
+  }
   next(err);
 }
 
@@ -17,11 +20,10 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log('---errorHandler---');
   res.status(500).json({
     message: err.message,
   });
-  next(err);
+  // next(err);
 }
 
 export function boomErrorHandler(
@@ -33,6 +35,7 @@ export function boomErrorHandler(
   if (err.isBoom) {
     const { output } = err;
     res.status(output.statusCode).json(output.payload);
+  } else {
+    next(err);
   }
-  next(err);
 }

@@ -1,21 +1,27 @@
-// Conexion:
 import mongoose from 'mongoose';
 import { config } from '../config';
+import logger from '../utils/logger';
 
-const URI = config.dbURI!;
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(config.dbURI, {
+      // useNewUrlParser: true, // <-- no longer necessary  documentation
+      // useUnifiedTopology: true,    //<-- no longer necessary  documentation
+    });
+    mongoose.set('strictQuery', false);
+    logger.info('[db] Successfully Connected');
+  } catch (error) {
+    logger.error('[db] Connection Error', error);
+    process.exit(1);
+  }
+};
 
-const mongoConn = mongoose.connect(URI, {
-  // useNewUrlParser: true,       //<-- no longer necessary  documentation
-  // useUnifiedTopology: true,    //<-- no longer necessary  documentation
-});
-
-const db = mongoose.connection;
-
-db.on('connected', () => {
-  console.log('[db] Conectada con éxito');
-});
-db.on('error', (error: any) => {
-  console.log('[db] Error de conexión', error);
-});
-
-export default db;
+export const disconnectDB = async () => {
+  try {
+    await mongoose.disconnect();
+    logger.info('[db] Disconnected');
+  } catch (error) {
+    logger.error('[db] Error disconnecting:', error);
+    process.exit(1);
+  }
+};

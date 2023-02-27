@@ -19,3 +19,9 @@ services:
       - 27020:27017
     volumes:
       - ./myData:/data/db
+
+  mongo-e2e:
+    container_name: mongo_iot_e2e
+    image: mongo:5.0.3
+    ports:
+      - 27021:27017

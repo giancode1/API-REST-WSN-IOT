@@ -46,6 +46,13 @@ class UserService {
   }
 
   async update(id: string, data: Partial<IUser>): Promise<IUser> {
+    if (data.password) {
+      const hash = brcypt.hashSync(data.password, 10);
+      data = {
+        ...data,
+        password: hash,
+      };
+    }
     const user = await User.findByIdAndUpdate(id, data).select('-password'); // return old user
     if (!user) throw boom.notFound('User not found');
     return user;

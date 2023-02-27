@@ -2,6 +2,7 @@ import mqtt from 'mqtt';
 import './libs/mongoose'; // conexion
 import Data from './libs/models/data.model';
 import { config } from './config';
+import logger from './utils/logger';
 
 let attempts = 0;
 const maxAttempts = 10;
@@ -12,18 +13,18 @@ const mqttClient = mqtt.connect(
 );
 
 mqttClient.on('connect', () => {
-  console.log('MQTT Connected!');
+  logger.info('MQTT Connected!');
 });
 
 mqttClient.on('error', error => {
-  console.log('Error connecting to MQTT: ' + error.message);
+  logger.warn('Error connecting to MQTT: ' + error.message);
   if (attempts < maxAttempts) {
     attempts++;
     mqttClient.reconnect();
   } else {
-    console.log(`Max Attempts reached: ${maxAttempts}`);
+    logger.info(`Max Attempts reached: ${maxAttempts}`);
     mqttClient.end();
-    console.log('Maximum attempts reached. Closing connection.');
+    logger.info('Maximum attempts reached. Closing connection.');
   }
 });
 
@@ -33,8 +34,8 @@ mqttClient.on('error', error => {
 mqttClient.subscribe(['/+/data', '/+/config']);
 
 mqttClient.on('message', (topic: string, message: any) => {
-  console.log('topic:', topic);
-  console.log('message:', message.toString());
+  logger.info('topic:', topic);
+  logger.info('message:', message.toString());
 
   const sensorId = topic.split('/')[1];
   const operation = topic.split('/')[2];
@@ -51,7 +52,7 @@ mqttClient.on('message', (topic: string, message: any) => {
       void createData(m).then(console.log);
     } catch (e) {
       mqttClient.publish(`/data/error`, `{"error": "${topic}"`); // talvez fallo el formato de envio del mensaje
-      console.log(`error: ${topic}`);
+      logger.info(`error: ${topic}`);
     }
   }
   // else if (operation === 'config') {
