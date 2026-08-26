@@ -164,13 +164,9 @@ router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
-  async (req, res, next) => {
-    try {
-      const sensors = await service.find();
-      res.json(sensors);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const sensors = await service.find();
+    res.json(sensors);
   }
 );
 
@@ -201,14 +197,10 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      const sensor = await service.findById(sensorId);
-      res.json(sensor);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    const sensor = await service.findById(sensorId);
+    res.json(sensor);
   }
 );
 
@@ -243,14 +235,10 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(createSensorSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const body = req.body;
-      const newSensor = await service.create(body);
-      res.status(201).json(newSensor);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const body = req.body;
+    const newSensor = await service.create(body);
+    res.status(201).json(newSensor);
   }
 );
 
@@ -288,15 +276,11 @@ router.patch(
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'),
   validatorHandler(updateSensorSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      const body = req.body;
-      const sensor = await service.update(sensorId, body);
-      res.json(sensor);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    const body = req.body;
+    const sensor = await service.update(sensorId, body);
+    res.json(sensor);
   }
 );
 
@@ -333,14 +317,10 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      await service.delete(sensorId);
-      res.status(200).json({ sensorId });
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    await service.delete(sensorId);
+    res.status(200).json({ sensorId });
   }
 );
 
@@ -422,23 +402,19 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'),
-  async (req: any, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      // transform quey params to int
-      const limit = parseInt(req.query.limit) || 10;
-      const offset = parseInt(req.query.offset) || 0;
-      const date = req.query.date;
-      const data = await service2.getDataBySensorId(
-        sensorId,
-        limit,
-        offset,
-        date
-      );
-      res.json(data);
-    } catch (error) {
-      next(error);
-    }
+  async (req: any, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    // transform quey params to int
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    const date = req.query.date;
+    const data = await service2.getDataBySensorId(
+      sensorId,
+      limit,
+      offset,
+      date
+    );
+    res.json(data);
   }
 );
 
@@ -488,15 +464,11 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'), // valido si esta bn el id del sensor
-  async (req, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      const body = req.body;
-      const newData = await service2.createDataBySensorId(sensorId, body);
-      res.status(201).json(newData);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    const body = req.body;
+    const newData = await service2.createDataBySensorId(sensorId, body);
+    res.status(201).json(newData);
   }
 );
 
@@ -541,15 +513,11 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getSensorSchema, 'params'), // valido si esta bn el id del sensor
-  async (req: any, res, next) => {
-    try {
-      const { sensorId } = req.params;
-      const limit = parseInt(req.query.limit) || 1;
-      const data = await service2.deleteManyBySensorId(sensorId, limit);
-      res.status(201).json(data);
-    } catch (error) {
-      next(error);
-    }
+  async (req: any, res) => {
+    const { sensorId } = req.params as { sensorId: string };
+    const limit = parseInt(req.query.limit) || 1;
+    const data = await service2.deleteManyBySensorId(sensorId, limit);
+    res.status(201).json(data);
   }
 );
 

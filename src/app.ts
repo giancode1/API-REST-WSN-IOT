@@ -17,6 +17,7 @@ import {
 import { connectDB } from './libs/mongoose';
 import { httpLogger } from './middlewares/httpLogger.handler';
 
+import './auth';
 import './finalMqtt';
 
 const createApp = () => {
@@ -30,9 +31,12 @@ const createApp = () => {
   app.use(express.json());
 
   app.use(cors());
-  require('./auth');
 
   const specs = swaggerJsDoc(options);
+
+  app.get('/health', (_req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok' });
+  });
 
   app.get('/', (_req: Request, res: Response) => {
     res.send(`

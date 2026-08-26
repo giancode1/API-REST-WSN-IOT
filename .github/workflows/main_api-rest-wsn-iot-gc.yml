@@ -19,22 +19,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
+          cache: "npm"
 
-      # - name: npm install, build, and test
       - name: npm install, build
         run: |
-          npm install
+          npm ci
           npm run build --if-present
-          # npm run test --if-present
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: .
@@ -48,13 +47,13 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: node-app
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: "api-rest-wsn-iot-gc"
           slot-name: "Production"

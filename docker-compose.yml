@@ -1,10 +1,8 @@
 # Para propósitos de desarrollo y pruebas locales
-version: '3.8'
 services:
   emqx:
     container_name: emqx
-    image: emqx/emqx:4.3.11
-    # image: emqx/emqx:4.2.3
+    image: emqx/emqx:5.8.4
     restart: always
     ports:
       - 18083:18083
@@ -13,7 +11,7 @@ services:
 
   mongo:
     container_name: mongo_iot
-    image: mongo:5.0.3
+    image: mongo:8
     restart: always
     ports:
       - 27020:27017
@@ -22,6 +20,6 @@ services:
 
   mongo-e2e:
     container_name: mongo_iot_e2e
-    image: mongo:5.0.3
+    image: mongo:8
     ports:
       - 27021:27017

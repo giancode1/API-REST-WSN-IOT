@@ -26,8 +26,8 @@ class SensorService {
 
   async update(id: string, data: ISensor): Promise<ISensor> {
     const sensor = await Sensor.findByIdAndUpdate(id, data);
-    sensor && (await publishChanges(id, data));
     if (!sensor) throw boom.notFound('Sensor not found');
+    await publishChanges(id, data);
     return sensor;
   }
 

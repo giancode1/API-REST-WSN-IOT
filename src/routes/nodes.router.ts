@@ -154,13 +154,9 @@ router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
-  async (req, res, next) => {
-    try {
-      const nodes = await service.find();
-      res.json(nodes);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const nodes = await service.find();
+    res.json(nodes);
   }
 );
 
@@ -190,14 +186,10 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getNodeSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const node = await service.findById(id);
-      res.json(node);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    const node = await service.findById(id);
+    res.json(node);
   }
 );
 
@@ -233,14 +225,10 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(createNodeSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const body = req.body;
-      const newNode = await service.create(body);
-      res.status(201).json(newNode);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const body = req.body;
+    const newNode = await service.create(body);
+    res.status(201).json(newNode);
   }
 );
 /**
@@ -276,15 +264,11 @@ router.patch(
   checkRoles('admin', 'user'),
   validatorHandler(getNodeSchema, 'params'),
   validatorHandler(updateNodeSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const body = req.body;
-      const node = await service.update(id, body);
-      res.json(node);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    const body = req.body;
+    const node = await service.update(id, body);
+    res.json(node);
   }
 );
 
@@ -320,14 +304,10 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin', 'user'),
   validatorHandler(getNodeSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      await service.delete(id);
-      res.status(200).json({ id });
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    await service.delete(id);
+    res.status(200).json({ id });
   }
 );
 

@@ -51,14 +51,10 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
 
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      await service.deleteDataById(id);
-      res.status(200).json({ id });
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    await service.deleteDataById(id);
+    res.status(200).json({ id });
   }
 );
 

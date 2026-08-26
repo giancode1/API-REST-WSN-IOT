@@ -73,21 +73,17 @@ const router = express.Router();
 router.post(
   '/login',
   passport.authenticate('local', { session: false }), // la estrategia es local, y no quiero manejar sesiones
-  async (req, res, next) => {
-    try {
-      const user: any = req.user;
-      const payload = {
-        role: user.role,
-        sub: user._id,
-      };
-      const token = jwt.sign(payload, config.jwtSecret!, { expiresIn: '7d' });
-      res.json({
-        user,
-        token,
-      });
-    } catch (error) {
-      next(error);
-    }
+  (req, res) => {
+    const user: any = req.user;
+    const payload = {
+      role: user.role,
+      sub: user._id,
+    };
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '7d' });
+    res.json({
+      user,
+      token,
+    });
   }
 );
 

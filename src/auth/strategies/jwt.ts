@@ -1,4 +1,4 @@
-import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy, ExtractJwt, VerifyCallback } from 'passport-jwt';
 import { config } from '../../config';
 
 const options = {
@@ -6,6 +6,8 @@ const options = {
   secretOrKey: config.jwtSecret,
 };
 
-export const JwtStrategy = new Strategy(options, (payload, done) => {
+const verify: VerifyCallback = (payload, done) => {
   done(null, payload);
-});
+};
+
+export const JwtStrategy = new Strategy(options, verify);

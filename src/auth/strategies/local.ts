@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-local';
 import boom from '@hapi/boom';
-import brcypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import UserService from '../../services/user.service';
 
 const service = new UserService();
@@ -15,18 +15,18 @@ export const LocalStrategy = new Strategy(
     try {
       const user: any = await service.findByEmail(email);
       if (!user) {
-        done(boom.unauthorized(), false);
+        return done(boom.unauthorized(), false);
       }
-      const isMatch = await brcypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        done(boom.unauthorized('invalid email or password'), false);
+        return done(boom.unauthorized('invalid email or password'), false);
       }
 
-      const { password: pass, ...userWithoutPass } = user._doc;
+      const { password: _pass, ...userWithoutPass } = user.toObject();
 
-      done(null, userWithoutPass); // null: no hay error
+      return done(null, userWithoutPass); // null: no hay error
     } catch (error) {
-      done(error, false);
+      return done(error, false);
     }
   }
 );

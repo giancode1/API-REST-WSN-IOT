@@ -3,6 +3,7 @@
 # npx prettier -check .
 
 # ignorar:
+.claude
 dist
 package-lock.json
 examples
