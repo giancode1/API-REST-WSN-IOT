@@ -1,8 +1,26 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { config } from './config';
 
-// require en vez de import: evita que tsc emita package.json dentro de dist
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { version } = require('../package.json') as { version: string };
+// Busca package.json subiendo desde este archivo. Funciona tanto en desarrollo
+// (src/swagger.options.ts -> ../package.json) como compilado
+// (dist/src/swagger.options.js -> ../../package.json), sin que tsc copie
+// package.json dentro de dist.
+const readVersion = (): string => {
+  let dir = __dirname;
+  for (;;) {
+    const file = path.join(dir, 'package.json');
+    if (fs.existsSync(file)) {
+      return (JSON.parse(fs.readFileSync(file, 'utf8')) as { version: string })
+        .version;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) return '0.0.0';
+    dir = parent;
+  }
+};
+
+const version = readVersion();
 
 const URL = config.urlBase ?? `http://localhost:${config.port}`;
 
