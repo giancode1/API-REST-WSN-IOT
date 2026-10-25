@@ -171,13 +171,9 @@ router.get(
   '/',
   passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
   checkRoles('admin'),
-  async (_req, res, next) => {
-    try {
-      const users = await service.find();
-      res.json(users);
-    } catch (error) {
-      next(error);
-    }
+  async (_req, res) => {
+    const users = await service.find();
+    res.json(users);
   }
 );
 
@@ -207,15 +203,10 @@ router.get(
   passport.authenticate('jwt', { session: false }), // no necesito manejar sesiones
   checkRoles('admin'),
   validatorHandler(getUserSchema, 'params'),
-  async (req, res, next) => {
-    // console.log(req.headers.authorization); // 'Bearer ' + token;
-    try {
-      const { id } = req.params;
-      const user = await service.findById(id);
-      res.json(user);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    const user = await service.findById(id);
+    res.json(user);
   }
 );
 
@@ -250,14 +241,10 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   validatorHandler(createUserSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const body = req.body;
-      const newUser = await service.create(body);
-      res.status(201).json(newUser);
-    } catch (error) {
-      next(error);
-    }
+  async (req, res) => {
+    const body = req.body;
+    const newUser = await service.create(body);
+    res.status(201).json(newUser);
   }
 );
 
@@ -295,16 +282,12 @@ router.patch(
   checkRoles('admin'),
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const body = req.body;
+  async (req, res) => {
+    const { id } = req.params as { id: string };
+    const body = req.body;
 
-      const user = await service.update(id, body);
-      res.json(user);
-    } catch (error) {
-      next(error);
-    }
+    const user = await service.update(id, body);
+    res.json(user);
   }
 );
 
@@ -343,15 +326,11 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   validatorHandler(getUserSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
+  async (req, res) => {
+    const { id } = req.params as { id: string };
 
-      await service.delete(id);
-      res.status(200).json({ id });
-    } catch (error) {
-      next(error);
-    }
+    await service.delete(id);
+    res.status(200).json({ id });
   }
 );
 

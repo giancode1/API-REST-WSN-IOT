@@ -1,6 +1,6 @@
 import boom from '@hapi/boom';
 import User, { IUser } from '../libs/models/user.model';
-import brcypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 class UserService {
   async find(): Promise<IUser[]> {
@@ -9,19 +9,19 @@ class UserService {
     return users;
   }
 
-  async create(data: IUser): Promise<IUser> {
+  async create(data: IUser): Promise<Omit<IUser, 'password'>> {
     const userExists = await User.findOne({ email: data.email });
     if (userExists) throw boom.badRequest('User already exists');
 
-    const hash = brcypt.hashSync(data.password, 10);
+    const hash = await bcrypt.hash(data.password, 10);
 
     const user = {
       ...data,
       password: hash,
     };
-    const newUser: any = await User.create(user);
+    const newUser = await User.create(user);
 
-    const { password, ...userWithoutPassword } = newUser._doc;
+    const { password: _password, ...userWithoutPassword } = newUser.toObject();
     return userWithoutPassword;
   }
 
@@ -47,7 +47,7 @@ class UserService {
 
   async update(id: string, data: Partial<IUser>): Promise<IUser> {
     if (data.password) {
-      const hash = brcypt.hashSync(data.password, 10);
+      const hash = await bcrypt.hash(data.password, 10);
       data = {
         ...data,
         password: hash,

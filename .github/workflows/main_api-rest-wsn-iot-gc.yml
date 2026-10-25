@@ -10,6 +10,8 @@ on:
     paths:
       - "src/**"
       - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - "tsconfig.json"
       - ".github/workflows/**"
   workflow_dispatch:
@@ -19,22 +21,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4 # usa la versión de "packageManager" en package.json
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "24.x"
+          cache: "pnpm"
 
-      # - name: npm install, build, and test
-      - name: npm install, build
+      # node-linker=hoisted: node_modules plano (sin symlinks) para que el
+      # artefacto subido a Azure App Service funcione igual que con npm
+      - name: pnpm install, build
         run: |
-          npm install
-          npm run build --if-present
-          # npm run test --if-present
+          pnpm install --frozen-lockfile --config.node-linker=hoisted
+          pnpm build
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: .
@@ -48,13 +54,13 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: node-app
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: "api-rest-wsn-iot-gc"
           slot-name: "Production"
@@ -63,4 +69,3 @@ jobs:
           src-path: ./src
           tsconfig-path: ./tsconfig.json
           package-path: ./package.json
-          package-lock-path: ./package-lock.json

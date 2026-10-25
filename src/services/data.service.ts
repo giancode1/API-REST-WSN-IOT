@@ -27,7 +27,7 @@ class DataService {
           throw boom.badRequest('Invalid Date');
         }
         options.createdAt = { $gte: myDate };
-      } catch (error) {
+      } catch {
         throw boom.badRequest('Invalid date format');
       }
     }

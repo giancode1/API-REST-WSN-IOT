@@ -18,7 +18,7 @@ export function errorHandler(
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
   res.status(500).json({
     message: err.message,

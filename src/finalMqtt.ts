@@ -33,9 +33,9 @@ mqttClient.on('error', error => {
 // suscribirse a un array de topicos
 mqttClient.subscribe(['/+/data', '/+/config']);
 
-mqttClient.on('message', (topic: string, message: any) => {
-  logger.info('topic:', topic);
-  logger.info('message:', message.toString());
+mqttClient.on('message', (topic: string, message: Buffer) => {
+  logger.info(`topic: ${topic}`);
+  logger.info(`message: ${message.toString()}`);
 
   const sensorId = topic.split('/')[1];
   const operation = topic.split('/')[2];
@@ -49,9 +49,9 @@ mqttClient.on('message', (topic: string, message: any) => {
         const newData = new Data(payload);
         return await newData.save();
       }
-      void createData(m).then(console.log);
-    } catch (e) {
-      mqttClient.publish(`/data/error`, `{"error": "${topic}"`); // talvez fallo el formato de envio del mensaje
+      void createData(m).then(saved => logger.info(saved));
+    } catch {
+      mqttClient.publish(`/data/error`, JSON.stringify({ error: topic })); // talvez fallo el formato de envio del mensaje
       logger.info(`error: ${topic}`);
     }
   }
@@ -66,8 +66,10 @@ async function publishChanges(sensorId: string, changes: any) {
     const myconfig = JSON.stringify(changes);
     mqttClient.publish(`/${sensorId}/config`, myconfig);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
+
+export const disconnectMqtt = () => mqttClient.end();
 
 export default publishChanges;
