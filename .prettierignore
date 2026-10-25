@@ -1,11 +1,11 @@
 # ya ignora por defecto node_modules
 # ejecuta para ver que archivos formatea
-# npx prettier -check .
+# pnpm exec prettier --check .
 
 # ignorar:
 .claude
 dist
-package-lock.json
+pnpm-lock.yaml
 examples
 fronted
 html

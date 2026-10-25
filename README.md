@@ -103,10 +103,10 @@ Para ver la información de los nodos restantes visita el [Proyecto](https://rep
 
 ## Instalar dependencias
 
+Requisitos: Node.js 24 LTS (ver `.nvmrc`) y [pnpm](https://pnpm.io) (la versión exacta está en `packageManager` de `package.json`; con `corepack enable` se activa sola).
+
 ```bash
-npm install
-# or
-yarn
+pnpm install
 ```
 
 ## Completar variables de entorno
@@ -136,21 +136,20 @@ Observa los parámetros de ejemplo en [swagger](https://api-rest-wsn-iot-gc.azur
 ## Modo Desarrollo
 
 ```bash
-npm run dev   # recomendado
-npm run dev2  # ignora errores , precacución
+pnpm dev
 ```
 
 ## Build
 
 ```bash
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```
 
 ## Desarrollo local mongodb - docker
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Configuración dispositivos IoT

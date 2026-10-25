@@ -454,3 +454,58 @@ npx jest --listTests   # confirma que ts-jest carga/transpila los tests
 Los tests e2e (`npm run e2e`) requieren MongoDB accesible vía `DB_URI` en
 `.env.e2e` y no se ejecutaron en este entorno por decisión acordada con el
 usuario.
+
+## 11. Actualización 2026-10: pnpm + Node 24 LTS
+
+Segunda etapa, hecha antes de publicar en GitHub (rama `modernizacion-2026`).
+
+**Gestor de paquetes: npm → pnpm**
+- Se eliminó `package-lock.json` y se generó `pnpm-lock.yaml`.
+- `package.json` declara `"packageManager": "pnpm@12.15.0"` (con
+  `corepack enable` se usa la versión exacta).
+- `pnpm-workspace.yaml` → `allowBuilds`: pnpm no ejecuta scripts de
+  instalación por defecto. Se permiten solo `bcrypt` (binario nativo) y
+  `esbuild` (usado por `tsx`); se niegan `@scarf/scarf` (telemetría),
+  `@parcel/watcher` y `unrs-resolver` (no hacen falta: traen binarios
+  precompilados o son opcionales).
+- Script `lint:fix` pasa a `eslint . --fix` (antes usaba `npm run`).
+- CI: `pnpm/action-setup@v4` + `actions/setup-node@v4` con `cache: pnpm`,
+  `pnpm install --frozen-lockfile --config.node-linker=hoisted` y
+  `pnpm build`. `node-linker=hoisted` genera un `node_modules` plano (sin
+  symlinks) para que el artefacto que se sube a Azure App Service se
+  comporte igual que con npm. Se quitó `package-lock-path` del paso de deploy.
+- README y `.prettierignore` actualizados a pnpm.
+
+**Runtime: Node 22 → Node 24 LTS**
+- `.nvmrc` → `24`, `engines.node` → `>=24`, `@types/node` → `^24`.
+- CI: `node-version: "24.x"`. `docker-compose.yml` no usa imagen de Node
+  (solo EMQX y MongoDB) y no hay `Dockerfile`, así que no hubo más cambios.
+- **Pendiente fuera del repo:** configurar el runtime del App Service de
+  Azure en Node 24 LTS.
+
+**Bug corregido: `Cannot find module '../package.json'` en producción**
+- `src/swagger.options.ts` hacía `require('../package.json')`, que funciona
+  con `tsx` desde `src/` pero falla al ejecutar `dist/src/index.js`
+  (`pnpm start`): la app no arrancaba. Ahora busca `package.json` subiendo
+  directorios desde `__dirname`, y funciona en ambos casos.
+
+**Verificación (Node 24.22, pnpm 12.15)**
+- `pnpm install`, `pnpm exec tsc --noEmit`, `pnpm build` y `pnpm lint`: OK.
+- Prueba de humo con `pnpm build && pnpm start` contra MongoDB 8 en Docker:
+  `/health` 200, `/docs` 200, login 404 con usuario inexistente, login OK
+  con un admin creado a mano (token JWT), `GET /users` y `GET /nodes`
+  autenticados 200, y 401 sin token.
+- Tests e2e de Jest: **fallan por infraestructura de test, no por la app.**
+  Dentro de Jest, el driver de MongoDB rechaza la conexión con
+  `Missing required sub-document 'driver' in the client metadata document`
+  (el mismo `mongoose.connect` funciona fuera de Jest). Solo pasa
+  `GET /` → 200. Queda pendiente ajustar el entorno de Jest para el driver
+  de MongoDB 7.
+- MQTT no se probó contra un broker real.
+
+```bash
+corepack enable        # o tener pnpm instalado
+pnpm install
+pnpm build && pnpm lint
+pnpm e2e               # requiere MongoDB (docker compose up -d mongo-e2e) y .env.e2e
+```

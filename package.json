@@ -9,7 +9,7 @@
     "start": "node ./dist/src/index.js",
     "build": "tsc",
     "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "test": "jest --verbose  --forceExit --runInBand  --detectOpenHandles",
     "e2e:windows": "set \"NODE_ENV=e2e\" && jest --verbose  --forceExit --runInBand",
@@ -32,7 +32,7 @@
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^22.10.5",
+    "@types/node": "^24.0.0",
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
@@ -71,6 +71,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "engines": {
-    "node": ">=22"
-  }
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.15.0"
 }

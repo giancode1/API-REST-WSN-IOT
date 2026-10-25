@@ -201,3 +201,7 @@ $RECYCLE.BIN/
 
 # data in mongo container for local development
 myData/
+
+# herramientas locales / artefactos de compresión en macOS
+.claude/
+__MACOSX/
